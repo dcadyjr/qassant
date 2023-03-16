@@ -59,41 +59,41 @@ const PsmGridMap = (check) => {
      if(check.name === '6: Make sure Child GAM (DFP) ID is entered into FAD'){
         columns=[{field: 'childIds', headerName: 'Child IDs', width: 90}]
         rows=[{id:1, childIds: check.data.childIds}]
-      
 }
     //check 7  or 8  or 11 or 18
     if(check.name === '7: (M) * Check networks in dashboard against Demand tab, enable newly approved demand, report discrepancy to OB' ||check.name === '8: Confirm the network IDs belong to the correct blocklist on all partners'|| check.name ==='11: Added Networks Functioning in Extension' ||check.name === '18: Pub-Owned Demand setup (if applicable)'){
-        //console.log(check.data.siteLevelBidders);
+
         rows= []
             for(var bidder in check.data.siteLevelBidders){
                 var detail = check.data.siteLevelBidders[bidder];
-                    // console.log('bidder',bidder)
-                    // console.log('detail',detail)
-                detail.map(function(info,index){
 
-                    //    console.log('info params', info.params);
-                    //    console.log('info sizes', info.sizes);
+                detail.map(function(info,index){
 
                 rows.push({id: `${bidder}${index}`, bidder:bidder, sizes:info.sizes, params:Object.values(info.params) })
                 })
             }
-       
-        
         columns= [{field: 'bidder', headerName: 'Bidder', width: 90},
                     {field: 'params', headerName: 'Params', width: 300},
                     {field: 'sizes', headerName: 'Sizes', width: 90}]
             
-    
   }
     if(check.name === '9: (M) Confirm Default FAD Features are Setup'){
-      console.log(check.data.adQuality);
-      var adQuality = Object.keys(check.data.adQuality);
-      console.log(adQuality);
-        
-        rows=[{id: 1, admiral: check.data.admiral, comscore: check.data.comscore }]
+      //console.log(check.data.identity);
+      var identityKeys = Object.keys(check.data.identity);
+      //console.log(identityKeys)
+      identityKeys.forEach(function(provider){ 
+        //var indetityInfo = check.data.identity.provider
+                //console.log(provider);
+                console.log('why', check.data.identity[provider]);
+      })
+      var adQ= [];
+      for (const [key,value] of Object.entries(check.data.adQuality)){
+        adQ.push(`${key}: ${value}\n`);
+      }
+        rows=[{id: 1, admiral: check.data.admiral, comscore: check.data.comscore, adQuality:adQ,   }]
 
         columns=[{field: 'identity', headerName: 'Identity', width: 90},
-                {field: 'adQuality', headerName: 'Ad Quality', width: 90},
+                {field: 'adQuality', headerName: 'Ad Quality', width: 500},
                 {field: 'admiral', headerName: 'Admiral', width: 90},
                 {field: 'comscore', headerName: 'Comscore', width: 90}
             ]
@@ -165,3 +165,4 @@ return {
 
 
 export default PsmGridMap;
+
